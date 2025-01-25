@@ -19,6 +19,6 @@
     "gpt-3-encoder": "1.1.4",
     "ollama": "0.5.12",
     "openai": "4.80.1",
-    "socket.io-client": "4.8.1"
+    "socket.io-client": "2.2.0"
   }
 }
