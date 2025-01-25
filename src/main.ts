@@ -62,9 +62,7 @@ async function handleNewMessage(latestChatMessage: SocketMessage) {
             msg => `${msg.author.firstname} ${msg.author.lastname[0]} says "${msg.content}"`
         ).join("\n")
 
-        // const summary = await morgpt.getSummary(textToSummarize, MorGPTChatModel.GPT3)
         const summary = await morgpt.getSummary(textToSummarize, MorGPTChatModel.GPT4o_mini)
-        // const summary = await morgpt.getSummary(textToSummarize, MorGPTChatModel.GPT4o)
         // const summary = await ollama.getSummary(textToSummarize, OllamaChatModel.llama32)
 
         // Output the response

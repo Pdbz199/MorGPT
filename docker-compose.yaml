@@ -1,8 +1,12 @@
 version: "3"
 
 services:
-    morgpt:
-        build:
-            context: "./"
-        image: "morgpt"
-        container_name: "MorGPT"
+  morgpt:
+    build:
+      context: "./"
+    image: "morgpt"
+    container_name: "MorGPT"
+    restart: "unless-stopped"
+    labels:
+      project: "morgpt"
+    network_mode: "host"

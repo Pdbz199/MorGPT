@@ -1,7 +1,7 @@
 /* CONSTANTS */
 
 // URL
-export const OLLAMA_API_URL = "http://127.0.0.1:11434/api"
+export const OLLAMA_API_URL = "http://127.0.0.1:11434"
 
 /* TYPES */
 
