@@ -7,7 +7,9 @@ import io from "socket.io-client"
 import morchat from "./morchat-sdk/morchat"
 import { MessageReceipt, SocketMessage } from "./morchat-sdk/types"
 import morgpt from "./morgpt-sdk/morgpt"
-import { ChatModel } from "./morgpt-sdk/constants"
+import ollama from "./ollama-sdk/ollama"
+import { ChatModel as MorGPTChatModel } from "./morgpt-sdk/constants"
+import { ChatModel as OllamaChatModel } from "./ollama-sdk/constants"
 
 /* CONSTANTS */
 
@@ -59,7 +61,11 @@ async function handleNewMessage(latestChatMessage: SocketMessage) {
         const textToSummarize = chatMessages.map(
             msg => `${msg.author.firstname} ${msg.author.lastname[0]} says "${msg.content}"`
         ).join("\n")
-        const summary = await morgpt.getSummary(textToSummarize, ChatModel.GPT3)
+
+        // const summary = await morgpt.getSummary(textToSummarize, MorGPTChatModel.GPT3)
+        const summary = await morgpt.getSummary(textToSummarize, MorGPTChatModel.GPT4o_mini)
+        // const summary = await morgpt.getSummary(textToSummarize, MorGPTChatModel.GPT4o)
+        // const summary = await ollama.getSummary(textToSummarize, OllamaChatModel.llama32)
 
         // Output the response
         socket.emit("sendMessage", {
@@ -89,6 +95,9 @@ async function main() {
 
     socket.on("connect", () => {
         console.log("Connected!")
+    })
+    socket.on("disconnect", () => {
+        console.log("Disconnected!")
     })
     socket.on("message", handleNewMessage)
     socket.on("message-sent", handleSentMessage)

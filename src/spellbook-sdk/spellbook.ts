@@ -19,5 +19,5 @@ export async function getSpellbookResponse(modelInputText: string): Promise<Infe
 /* DEFAULT EXPORTS */
 
 export default {
-    getSpellbookResponse
+    getSpellbookResponse,
 }

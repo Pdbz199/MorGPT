@@ -37,14 +37,14 @@ export class AuthenticatedUser {
 
             messages.push(...messagesResponse.data)
         }
-    
+
         return messages.slice(0, limit).reverse()
     }
 
     public async login(emailOrUsername: string, password: string): Promise<void> {
         const loginResponse = await axios.post(
             `${constants.MORCHAT_API_URL}/login`,
-            { emailOrUsername, password }
+            { emailOrUsername, password },
         )
 
         this.headers = { "cookie": loginResponse.headers["set-cookie"][0].split(";")[0] }
@@ -54,5 +54,5 @@ export class AuthenticatedUser {
 /* DEFAULT EXPORTS */
 
 export default {
-    AuthenticatedUser
+    AuthenticatedUser,
 }

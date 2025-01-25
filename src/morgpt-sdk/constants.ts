@@ -22,8 +22,10 @@ export const behaviorCloningPromptTemplate =
 /* TYPES */
 
 export enum ChatModel {
-    GPT3 = "gpt-3.5-turbo",
-    GPT4 = "gpt-4"
+    // GPT3 = "gpt-3.5-turbo",
+    // GPT4 = "gpt-4",
+    GPT4o_mini = "gpt-4o-mini",
+    GPT4o = "gpt-4o",
 }
 
 /* DEFAULT EXPORT */
@@ -35,5 +37,5 @@ export default {
     summaryPromptTemplate,
 
     // Types
-    ChatModel
+    ChatModel,
 }
