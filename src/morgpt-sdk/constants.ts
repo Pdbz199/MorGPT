@@ -22,8 +22,7 @@ export const behaviorCloningPromptTemplate =
 /* TYPES */
 
 export enum ChatModel {
-    GPT4o_mini = "gpt-4o-mini",
-    GPT4o = "gpt-4o",
+    GPT5_MINI = "gpt-5-mini",
 }
 
 /* DEFAULT EXPORT */

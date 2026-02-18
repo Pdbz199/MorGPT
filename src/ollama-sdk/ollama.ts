@@ -12,7 +12,7 @@ export async function getSummary(textToSummarize: string, model: ChatModel): Pro
     console.log("Sending request to ollama...")
     try {
         const completion = await ollama.chat({
-            model: ChatModel.llama32,
+            model: ChatModel.smollm,
             messages: [
                 { role: "system", content: morgpt_constants.summarizerBotSystemPrompt },
                 { role: "user", content: textToSummarize },

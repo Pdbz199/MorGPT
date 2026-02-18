@@ -10,15 +10,21 @@
   "license": "AGPL-3.0",
   "devDependencies": {
     "@types/node-fetch": "2.6.2",
-    "dotenv": "16.0.3",
+    "dotenv": "16.4.7",
     "ts-node": "10.9.1",
     "typescript": "5.0.2"
   },
   "dependencies": {
+    "@langchain/community": "^0.3.27",
+    "@langchain/core": "^0.3.36",
+    "@langchain/ollama": "^0.1.5",
     "axios": "1.7.9",
     "gpt-3-encoder": "1.1.4",
+    "langchain": "^0.3.13",
     "ollama": "0.5.12",
     "openai": "4.80.1",
-    "socket.io-client": "2.2.0"
+    "pg": "^8.13.1",
+    "socket.io-client": "2.2.0",
+    "uuid": "^11.0.5"
   }
 }

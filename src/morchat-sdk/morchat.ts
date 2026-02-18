@@ -7,6 +7,10 @@ import {
     type Message
 } from "./types"
 
+const MORCHAT_REQUEST_TIMEOUT_MS = 45000
+const MORCHAT_MAX_RETRIES = 3
+const MORCHAT_RETRY_DELAY_MS = 1200
+
 /* FUNCTIONALITY */
 
 export class AuthenticatedUser {
@@ -16,26 +20,55 @@ export class AuthenticatedUser {
 
     /* PUBLIC FUNCTIONS */
 
+    private async delay(ms: number): Promise<void> {
+        await new Promise(resolve => setTimeout(resolve, ms))
+    }
+
+    private async getWithRetry<T>(url: string, config: any): Promise<T> {
+        let lastError: any
+
+        for (let attempt = 1; attempt <= MORCHAT_MAX_RETRIES; attempt++) {
+            try {
+                const response = await axios.get(url, config)
+                return response.data as T
+            } catch (err: any) {
+                lastError = err
+                const isTimeout = err?.code === "ECONNABORTED"
+                const status = err?.response?.status
+                const shouldRetry = isTimeout || (typeof status === "number" && status >= 500)
+
+                if (!shouldRetry || attempt === MORCHAT_MAX_RETRIES) break
+                await this.delay(MORCHAT_RETRY_DELAY_MS * attempt)
+            }
+        }
+
+        throw lastError
+    }
+
     public async getAllChats(): Promise<Chat[]> {
-        return (await axios.get(
+        return await this.getWithRetry<Chat[]>(
             `${constants.MORCHAT_API_URL}/chats`,
-            { headers: this.headers }
-        )).data
+            {
+                headers: this.headers,
+                timeout: MORCHAT_REQUEST_TIMEOUT_MS,
+            }
+        )
     }
 
     public async getChatMessages(chatId: number, limit=20): Promise<Message[]> {
         const messages: Message[] = []
 
         for (let i = 0; i < limit/20; i++) {
-            const messagesResponse = await axios.get(
+            const messageBatch = await this.getWithRetry<Message[]>(
                 `${constants.MORCHAT_API_URL}/chats/id/${chatId}/messages`,
                 {
                     params: { "skip": i*20 },
-                    headers: this.headers
+                    headers: this.headers,
+                    timeout: MORCHAT_REQUEST_TIMEOUT_MS,
                 }
             )
 
-            messages.push(...messagesResponse.data)
+            messages.push(...messageBatch)
         }
 
         return messages.slice(0, limit).reverse()
@@ -45,6 +78,7 @@ export class AuthenticatedUser {
         const loginResponse = await axios.post(
             `${constants.MORCHAT_API_URL}/login`,
             { emailOrUsername, password },
+            { timeout: MORCHAT_REQUEST_TIMEOUT_MS }
         )
 
         this.headers = { "cookie": loginResponse.headers["set-cookie"][0].split(";")[0] }
